@@ -110,7 +110,8 @@ for fold, (train_idx, test_idx) in enumerate(skf.split(X_latent, y)): # skf auto
 print("\nChance Level: 2%")
 print(f"\nAverage Accuracy: {np.mean(accuracies)*100:.1f}%")
 
-# now it's time to try our GKF on data from other days
+# now it's time to try our GKF on data from other days - uncomment starting below
+'''
 
 baseDir2 = "/Users/apple/Documents/MATLAB/EE 675/Willett Data/sentences/"
 
@@ -165,4 +166,6 @@ pred_otherDay = lda.predict(trial_otherDay)
 acc_otherDay = accuracy_score(y_otherDay, pred_otherDay)
 
 print("\Classification On Sentences Data:")
-print(f"\nAverage Accuracy: {np.mean(acc_otherDay)*100:.1f}%") # should return 100% !!!
+print(f"\nAverage Accuracy: {np.mean(acc_otherDay)*100:.1f}%")
+
+'''

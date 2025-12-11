@@ -111,8 +111,8 @@ for fold, (train_idx, test_idx) in enumerate(skf.split(X_latent, y)): # skf auto
 print("\nClassification On Tuning Data:")
 print(f"\nAverage Accuracy: {np.mean(accuracies)*100:.1f}%")
 
-# now it's time to try our GKF on data from other days
-
+# now it's time to try our GKF on data from other days - uncomment starting below
+'''
 baseDir2 = "/Users/apple/Documents/MATLAB/EE 675/Willett Data/sentences/"
 
 compDat1 = scipy.io.loadmat(baseDir2+'t12.2022.05.17_sentences.mat') # data from May 17th 2022
@@ -167,3 +167,5 @@ acc_otherDay = accuracy_score(y_otherDay, pred_otherDay)
 
 print("\Classification On Sentences Data:")
 print(f"\nAverage Accuracy: {np.mean(acc_otherDay)*100:.1f}%") # should return 100% !!!
+
+'''
