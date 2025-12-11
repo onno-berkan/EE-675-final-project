@@ -7,11 +7,6 @@ from matplotlib import cm
 import numpy as np
 from omegaconf import OmegaConf
 
-import sys
-sys.path.insert(0, "./NeuralDecoder")
-from neuralDecoder.neuralSequenceDecoder import NeuralSequenceDecoder
-import os
-
 @njit
 def meanResamples(trlConcat, nResamples):
     resampleMeans = np.zeros((nResamples, trlConcat.shape[1], trlConcat.shape[2]))
