@@ -109,3 +109,60 @@ for fold, (train_idx, test_idx) in enumerate(skf.split(X_latent, y)): # skf auto
 
 print("\nChance Level: 2%")
 print(f"\nAverage Accuracy: {np.mean(accuracies)*100:.1f}%")
+
+# now it's time to try our GKF on data from other days
+
+baseDir2 = "/Users/apple/Documents/MATLAB/EE 675/Willett Data/sentences/"
+
+compDat1 = scipy.io.loadmat(baseDir2+'t12.2022.05.17_sentences.mat') # data from May 17th 2022
+compDat2 = scipy.io.loadmat(baseDir2+'t12.2022.05.19_sentences.mat') # data from May 19th 2022
+
+# does not actually subtract the mean; replicates step one of the tuning data pre-processing, also returns the indices of the relevant (50-word sentence) blocks
+def meanSubtract2(dat):
+    # sqrt transform -- makes spike bins look more gaussian
+    dat['feat'] = np.concatenate([dat['tx2'][:,:32].astype(np.float32), dat['tx2'][:,96:128].astype(np.float32), dat['spikePow'][:,:32].astype(np.float32), dat['spikePow'][:,96:128].astype(np.float32)], axis=1)
+    dat['feat'] = np.sqrt(dat['feat'])
+        
+    blockList = dat['blockList'][np.where(dat['blockTypes'] == 'OL Chang')[0]]
+    return dat, blockList
+
+# returns the bins for each sentence in the relevant blocks
+def changSentences(data, blockList):
+    sentences = []
+    binRange = []
+    for block in blockList:
+        rangeTemp = np.where(data['blockNum'] == block)[0]
+        trialMin = np.where(data['goTrialEpochs'] == rangeTemp[0])[0][0] + 1
+        trialMax = np.where(data['goTrialEpochs'] == rangeTemp[-1] + 1)[0][0]
+        sentences.append(data['sentences'][trialMin:trialMax + 1])
+        binRange.append(data['goTrialEpochs'][trialMin:trialMax + 1])
+    return np.concatenate(np.squeeze(sentences)), np.concatenate(binRange)
+
+# doesn't normalize data; returns data for the 'yes' and 'no' trials
+def normalizeYesNo(data):
+    changDatTemp, blockList = meanSubtract2(data)
+    sentenceList, binRange = changSentences(changDatTemp, blockList)
+
+    noId = np.where(sentenceList == "No")[0].item()
+    yesId = np.where(sentenceList == "Yes")[0].item()
+
+    noData = data['feat'][binRange[noId, 0]:binRange[noId, 1], :]
+    yesData = data['feat'][binRange[yesId, 0]:binRange[yesId, 1], :]
+
+    return noData, yesData
+
+noData1, yesData1 = normalizeYesNo(compDat1)
+noData2, yesData2 = normalizeYesNo(compDat2)
+
+# combine yes/no data for the two days
+X_test_otherDay = [noData1, noData2, yesData1, yesData2]
+y_otherDay = [0, 0, 1, 1] # labels
+trial_otherDay = extract_features(X_test_otherDay, kf_global) # apply the GKF we tuned to extract features from the unseen sessions' data 
+lda.fit(X_latent, y) # fit LDA to all of the tuning data, this will be tested on feature-extracted unseen sessions' data
+
+# test LDA on unseen sessions' data
+pred_otherDay = lda.predict(trial_otherDay)
+acc_otherDay = accuracy_score(y_otherDay, pred_otherDay)
+
+print("\Classification On Sentences Data:")
+print(f"\nAverage Accuracy: {np.mean(acc_otherDay)*100:.1f}%") # should return 100% !!!
