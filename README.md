@@ -19,8 +19,8 @@ plotData.ipynb: Because I ran the above two files on a server, I couldn't output
 
 For Tables 1 and 2: Table 1 can be obtained by commenting out the pre-processing steps in initialAnalysis.py for the no-preprocessing columns and by simply running the cells for the rest. Table 2 can be obtained by running the cells further down the same notebook. Note that the notebook does not output accuracy metrics, but they can clearly be seen from the output.
 
-For Graph 1 and 2 (Accuracy vs EM Iterations and Latent State Dimensionality in Yes/No): Manipulate runYesNoGKF.py by adding for loops to vary the EM_ITERS and LATENT_DIM variables. See comments on code. Run on a server.
+For Graph 1 and 2 (Accuracy vs EM Iterations and Latent State Dimensionality in Yes/No): Manipulate runYesNoGKF.py by adding for loops to vary the EM_ITERS and LATENT_DIM variables. See comments on code. Run on a server. Paste data into plotData.ipynb.
 
-For Graph 3 (Accuracy vs Latent State Dimensionality in 50 Word): Same as above, manipulate runGKF.py this time. See comments on code. This needs to be run on a server; 10+ GB of memory is needed if you want to go above ~40 dimensions, and the amount of memory needed only goes up.
+For Graph 3 (Accuracy vs Latent State Dimensionality in 50 Word): Same as above, manipulate runGKF.py this time. See comments on code. This needs to be run on a server; 10+ GB of memory is needed if you want to go above ~40 dimensions, and the amount of memory needed only goes up. Paste data into plotData.ipynb.
 
 For Table 3: Uncomment the last parts of runYesNoGKF.py and runGKF.py
