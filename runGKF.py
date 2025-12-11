@@ -13,8 +13,9 @@ import matplotlib.pyplot as plt
 baseDir = "/home1/berkan/ee675-mind-reader/tuning-tasks-all/" # adjust to your directory
 fiftyWordDat = scipy.io.loadmat(baseDir+'tuningTasks/t12.2022.05.03_fiftyWordSet.mat')
 
-# sqrt transform -- makes spike bins look more gaussian
+# use only the ventral array - found to be more informative about speech
 fiftyWordDat['feat'] = np.concatenate([fiftyWordDat['tx2'][:,:32].astype(np.float32), fiftyWordDat['tx2'][:,96:128].astype(np.float32), fiftyWordDat['spikePow'][:,:32].astype(np.float32), fiftyWordDat['spikePow'][:,96:128].astype(np.float32)], axis=1)
+# sqrt transform -- makes spike bins look more gaussian
 fiftyWordDat['feat'] = np.sqrt(fiftyWordDat['feat'])
 
 # make an array containing the data
