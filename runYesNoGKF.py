@@ -113,7 +113,7 @@ print(f"\nAverage Accuracy: {np.mean(accuracies)*100:.1f}%")
 
 # now it's time to try our GKF on data from other days
 
-baseDir2 = baseDir = "/Users/apple/Documents/MATLAB/EE 675/Willett Data/sentences/"
+baseDir2 = "/Users/apple/Documents/MATLAB/EE 675/Willett Data/sentences/"
 
 compDat1 = scipy.io.loadmat(baseDir2+'t12.2022.05.17_sentences.mat') # data from May 17th 2022
 compDat2 = scipy.io.loadmat(baseDir2+'t12.2022.05.19_sentences.mat') # data from May 19th 2022
